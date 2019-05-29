@@ -1,5 +1,6 @@
 import React from "react";
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import "./App.css";
 import Main from './main/main';
 import SideBarMain from './main/sideBarMain';
@@ -7,6 +8,7 @@ import Note from './note/note';
 import SideBarNote from './note/sideBarNote';
 import Folder from './folder/folder';
 import SideBarFolder from './folder/sideBarFolder';
+
 
 class App extends React.Component {
   state = {
@@ -144,22 +146,34 @@ class App extends React.Component {
     return (
       <div className="App">
         <header>
-          <h1>Noteful</h1>
+          <Link to={`/`}>Noteful</Link>
         </header>
-        <div className='sideBar'>
-          <Route exact path='/' render={()=> <SideBarMain state={this.state} />}/>
-          <Route path='/folder/:folderId' render={()=> <SideBarFolder state={this.state}/>} />
-          {/* <Route path='/note' render={()=> <SideBarNote state={this.state} />/> */}
+        <div className='flexBox'>
+          <div className='sideBar'>
+            <Route exact path='/' render={()=> <SideBarMain state={this.state} />}/>
+            <Route path='/folder/:folderId' render={()=> <SideBarFolder state={this.state}/>} />
+            <Route path='/note/:noteId' render={(match, history, location) =>
+              <SideBarNote
+                match={match}
+                history={history}
+                location={location}
+                state={this.state} />
+            }/>
+          </div>
+          <main>
+            <Route exact path='/' render={()=> <Main state={this.state} />} />
+            <Route path='/folder/:folderId' render={(match, history, location)=> <Folder 
+            match={match}
+            history={history}
+            location={location}
+            state={this.state} />}/>
+            <Route path='/note/:noteId' render={(match, history, location) => <Note
+              match={match}
+              history={history}
+              location={location}
+              state={this.state} />}/>
+          </main>
         </div>
-        <main>
-          <Route exact path='/' render={()=> <Main state={this.state} />} />
-          <Route path='/folder/:folderId' render={(match, history, location)=> <Folder 
-          match={match}
-          history={history}
-          location={location}
-          state={this.state} />}/>
-          {/* <Route path='/note' render={()=> <Note state={this.state} />/> */}
-        </main>
       </div>
     );
   }
