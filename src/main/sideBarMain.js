@@ -1,12 +1,19 @@
 import React from "react";
 import {Link} from 'react-router-dom';
+import UserContext from '../UserContext';
 
-export default function SideBarMain(props) {
-  const folderList = props.state.folders.map(folder => {
+export default class SideBarMain extends React.Component {
+  static contextType = UserContext;
+
+  render() {
+  
+  const folderList = this.context.folders.map(folder => {
     return (
-      <Link to ={`/folder/${folder.id}`} className="folder" key={folder.id}>
-        <h4>{folder.name}</h4>
-      </Link>
+      <div className='folder'>
+        <Link to ={`/folder/${folder.id}`} key={folder.id}>
+          <h4>{folder.name}</h4>
+        </Link>
+      </div>
     );
   });
   return (
@@ -15,4 +22,5 @@ export default function SideBarMain(props) {
       <button className="addFolder">Add Folder</button>
     </div>
   );
+}
 }

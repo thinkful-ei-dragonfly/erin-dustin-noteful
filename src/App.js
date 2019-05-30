@@ -1,12 +1,14 @@
 import React from "react";
-import {Route} from 'react-router-dom';
+import { Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./App.css";
-import Main from './main/main';
-import SideBarMain from './main/sideBarMain';
-import Note from './note/note';
-import SideBarNote from './note/sideBarNote';
-import Folder from './folder/folder';
-import SideBarFolder from './folder/sideBarFolder';
+import Main from "./main/main";
+import SideBarMain from "./main/sideBarMain";
+import Note from "./note/note";
+import SideBarNote from "./note/sideBarNote";
+import Folder from "./folder/folder";
+import SideBarFolder from "./folder/sideBarFolder";
+import UserContext from "./UserContext";
 
 class App extends React.Component {
   state = {
@@ -140,30 +142,61 @@ class App extends React.Component {
     ]
   };
 
+  handleDelete = (noteId) => {
+    const filteredNotes = this.state.notes.filter(note => note.id !== noteId)
+    this.setState({
+      notes: filteredNotes,
+    })
+  }
+
   render() {
+    const contextValue = {
+      folders: this.state.folders,
+      notes: this.state.notes,
+      handleDelete: this.handleDelete
+    };
     return (
-      <div className="App">
-        <header>
-          <h1>Noteful</h1>
-        </header>
-        <div className='sideBar'>
-          <Route exact path='/' render={()=> <SideBarMain state={this.state} />}/>
-          <Route path='/folder/:folderId' render={()=> <SideBarFolder state={this.state}/>} />
-          {/* <Route path='/note' render={()=> <SideBarNote state={this.state} />/> */}
+      <UserContext.Provider value={contextValue}>
+        <div className="App">
+          <header>
+            <Link to={`/`}>Noteful</Link>
+          </header>
+          <div className="flexBox">
+            <div className="sideBar">
+              <Route
+                exact
+                path="/"
+                component={SideBarMain}
+              />
+              <Route
+                path="/folder/:folderId"
+                component={SideBarFolder}
+              />
+              <Route
+                path="/note/:noteId"
+                  component={SideBarNote}
+              />
+            </div>
+            <main>
+              <Route
+                exact
+                path="/"
+                component={Main}
+              />
+              <Route
+                path="/folder/:folderId"
+                component={Folder}
+              />
+              <Route
+                path="/note/:noteId"
+                component={Note}
+              />
+            </main>
+          </div>
         </div>
-        <main>
-          <Route exact path='/' render={()=> <Main state={this.state} />} />
-          <Route path='/folder/:folderId' render={(match, history, location)=> <Folder 
-          match={match}
-          history={history}
-          location={location}
-          state={this.state} />}/>
-          {/* <Route path='/note' render={()=> <Note state={this.state} />/> */}
-        </main>
-      </div>
+      </UserContext.Provider>
     );
   }
 }
-
 
 export default App;
