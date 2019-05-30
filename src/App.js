@@ -144,6 +144,7 @@ class App extends React.Component {
 
   handleDelete = (noteId) => {
     const filteredNotes = this.state.notes.filter(note => note.id !== noteId)
+    
     this.setState({
       notes: filteredNotes,
     })

@@ -9,8 +9,8 @@ export default class SideBarMain extends React.Component {
   
   const folderList = this.context.folders.map(folder => {
     return (
-      <div className='folder'>
-        <Link to ={`/folder/${folder.id}`} key={folder.id}>
+      <div className='folder' key={folder.id}>
+        <Link to ={`/folder/${folder.id}`}>
           <h4>{folder.name}</h4>
         </Link>
       </div>

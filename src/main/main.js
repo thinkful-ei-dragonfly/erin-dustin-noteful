@@ -9,12 +9,16 @@ export default class Main extends React.Component {
   render (){
   const noteList = this.context.notes.map((note) => {
     return (
-      <div className='note'>
-        <Link to={`/note/${note.id}`} key={note.id}>
+      <div className='note' key={note.id}>
+        <Link to={`/note/${note.id}`}>
           <h3>{note.name}</h3>
           <p>{note.modified}</p>
-          <button type="delete">Delete Note</button>
         </Link>
+        <button onClick={() => {
+        this.props.history.push('/')
+        this.context.handleDelete(note.id)
+        }}
+        type="delete">Delete Note</button>
       </div>
     );
   });
