@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 import UserContext from '../UserContext';
+import { format } from 'date-fns';
 
 
 export default class Main extends React.Component {
@@ -12,7 +13,7 @@ export default class Main extends React.Component {
       <div className='note' key={note.id}>
         <Link to={`/note/${note.id}`}>
           <h3>{note.name}</h3>
-          <p>{note.modified}</p>
+          <p>Date modified on <span>{format(note.modified, 'Do MMM YYYY')}</span></p>
         </Link>
         <button onClick={() => {
         this.props.history.push('/')
